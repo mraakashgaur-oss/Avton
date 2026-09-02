@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AVTON Ventures - Clean Energy &amp; EV Infrastructure</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{cyan:{400:'#22d3ee',500:'#06b6d4',600:'#0891b2',700:'#0e7490'}}}}}</script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--cyan:#22d3ee;--cyan-dim:#0e7490;--bg-card:rgba(15,23,42,0.85);--border:rgba(34,211,238,.18);--glow-sm:0 0 12px rgba(34,211,238,.35);--glow-md:0 0 28px rgba(34,211,238,.45)}
+    html{scroll-behavior:smooth}
+    body{font-family:system-ui,sans-serif;background:#030712}
+    ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#030712}::-webkit-scrollbar-thumb{background:var(--cyan-dim);border-radius:3px}
+    .glass{background:var(--bg-card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--border)}
+    .btn-cyan{background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;border:none;padding:.6rem 1.4rem;border-radius:8px;font-weight:600;cursor:pointer;box-shadow:var(--glow-sm);transition:all .25s ease}
+    .btn-cyan:hover{box-shadow:var(--glow-md);transform:translateY(-1px)}
+    .btn-ghost{background:transparent;color:var(--cyan);border:1px solid var(--border);padding:.6rem 1.4rem;border-radius:8px;font-weight:500;cursor:pointer;transition:all .25s ease}
+    .btn-ghost:hover{background:rgba(34,211,238,.08);border-color:var(--cyan)}
+    .input-field{width:100%;padding:.65rem 1rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;color:#e5e7eb;font-size:.9rem;outline:none;transition:border-color .25s,box-shadow .25s}
+    .input-field:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(34,211,238,.12)}
+    .input-field::placeholder{color:#6b7280}
+    select.input-field option{background:#0f172a}
+    .solution-card{background:var(--bg-card);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:16px;padding:1.75rem;transition:all .3s ease}
+    .solution-card:hover{transform:translateY(-4px);border-color:rgba(34,211,238,.4);box-shadow:var(--glow-md)}
+    .status-active{background:rgba(16,185,129,.15);color:#34d399;border:1px solid rgba(16,185,129,.3)}
+    .status-next{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.3)}
+    .status-coming{background:rgba(139,92,246,.12);color:#a78bfa;border:1px solid rgba(139,92,246,.3)}
+    .status-badge{padding:.2rem .65rem;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.04em}
+    .tab-btn{padding:.6rem 1.4rem;border-radius:8px;font-weight:600;font-size:.9rem;cursor:pointer;border:1px solid transparent;transition:all .25s ease}
+    .tab-btn.active{background:linear-gradient(135deg,#0e7490,#0891b2);color:#fff;border-color:var(--cyan);box-shadow:var(--glow-sm)}
+    .tab-btn:not(.active){background:rgba(255,255,255,.04);color:#9ca3af;border-color:var(--border)}
+    .badge-partner{display:inline-flex;align-items:center;gap:.45rem;background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.4);border-radius:999px;padding:.3rem .85rem;font-size:.78rem;font-weight:600;color:var(--cyan);box-shadow:var(--glow-sm)}
+    .asset-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:1.25rem;transition:all .25s ease}
+    .asset-card:hover{border-color:rgba(34,211,238,.3)}
+    .warranty-bar{height:6px;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+    .warranty-fill{height:100%;border-radius:3px}
+    .ticket-step{display:flex;gap:.85rem;position:relative}
+    .ticket-step:not(:last-child)::before{content:'';position:absolute;left:15px;top:32px;width:2px;height:calc(100% + 8px);background:var(--border)}
+    .step-dot{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700}
+    .step-dot.done{background:rgba(34,211,238,.2);border:2px solid var(--cyan);color:var(--cyan)}
+    .step-dot.pend{background:rgba(255,255,255,.05);border:2px solid var(--border);color:#6b7280}
+    .step-dot.inprog{background:rgba(245,158,11,.15);border:2px solid #fbbf24;color:#fbbf24}
+    #chatbot-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:200}
+    .chat-bubble{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#0284c7);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--glow-md);transition:transform .25s}
+    .chat-bubble:hover{transform:scale(1.08)}
+    .chat-window{position:absolute;bottom:72px;right:0;width:360px;max-height:520px;background:rgba(9,15,30,.97);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.6),var(--glow-md);display:flex;flex-direction:column}
+    .chat-header{background:linear-gradient(135deg,#0e7490,#075985);padding:.9rem 1.1rem;display:flex;align-items:center;gap:.6rem}
+    .chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.75rem}
+    .chat-input-row{padding:.75rem;border-top:1px solid var(--border);display:flex;gap:.5rem;align-items:flex-end}
+    .chat-input-row textarea{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;color:#e5e7eb;font-size:.85rem;padding:.55rem .8rem;outline:none;resize:none;max-height:100px;font-family:inherit}
+    .chat-input-row textarea:focus{border-color:var(--cyan)}
+    .msg-bot{padding:.6rem .9rem;border-radius:14px;max-width:85%;font-size:.85rem;line-height:1.6;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.2);align-self:flex-start}
+    .msg-user{padding:.6rem .9rem;border-radius:14px;max-width:85%;font-size:.85rem;line-height:1.6;background:rgba(6,182,212,.25);border:1px solid rgba(6,182,212,.3);align-self:flex-end}
+    .ticket-cta-btn{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#fbbf24;border-radius:8px;padding:.45rem .8rem;font-size:.78rem;font-weight:600;cursor:pointer;width:100%;margin-top:.4rem;transition:all .25s}
+    .ticket-cta-btn:hover{background:rgba(245,158,11,.25)}
+    .section-label{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
+    #navbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(3,7,18,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .grid-bg{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(34,211,238,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.04) 1px,transparent 1px);background-size:60px 60px}
+    @keyframes pulse-cyan{0%,100%{box-shadow:0 0 8px rgba(34,211,238,.3)}50%{box-shadow:0 0 22px rgba(34,211,238,.7)}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes bounce-dot{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+    .animate-float{animation:float 4s ease-in-out infinite}
+    .animate-pulse-cyan{animation:pulse-cyan 2.5s ease-in-out infinite}
+    .fade-up{animation:fadeInUp .6s ease forwards}
+    @media(max-width:768px){.chat-window{width:calc(100vw - 2rem);right:-0.5rem}}
+  </style>
+</head>
+<body class="text-gray-100 min-h-screen">
+<div id="app"></div>
+<script>
+// ── MOCK DATA ──────────────────────────────────────────────────────────────────
+const mockData = {
+  assets: [
+    {id:'CHG-001',name:'EV Eco Plug Pro 7.4kW AC',serial:'EVP-7K-2024-001842',location:'Site A - Basement P1, Bay 03',installed:'2024-03-15',warrantyExpiry:'2027-03-15',firmware:'v2.4.1',status:'online',sessions:142,energyDelivered:'1,874 kWh',specs:{Power:'7.4 kW',Voltage:'230V AC',Current:'32A',Protection:'IP54, IK08'}},
+    {id:'CHG-002',name:'EV Eco Plug DC Fast 60kW',serial:'EVP-60K-2024-005301',location:'Site B - Open Parking, Bay 01',installed:'2024-06-01',warrantyExpiry:'2027-06-01',firmware:'v3.1.0',status:'online',sessions:89,energyDelivered:'3,421 kWh',specs:{Power:'60 kW',Voltage:'200-920V DC',Current:'100A DC',Protection:'IP55, IK10'}},
+    {id:'CHG-003',name:'EV Eco Plug Compact 3.3kW',serial:'EVP-3K-2023-009917',location:'Office Fleet - Carport Bay 07',installed:'2023-11-20',warrantyExpiry:'2025-11-20',firmware:'v1.9.3',status:'offline',sessions:204,energyDelivered:'2,012 kWh',specs:{Power:'3.3 kW',Voltage:'230V AC',Current:'16A',Protection:'IP44, IK07'}}
+  ],
+  tickets: [
+    {id:'TKT-2024-0391',assetName:'EV Eco Plug Compact 3.3kW',category:'Connectivity Issue',description:'Charger shows offline in dashboard. LED indicator is solid red. Tried power-cycling twice.',created:'2024-08-28',status:'resolved',steps:[{label:'Received',time:'2024-08-28 09:14',done:true},{label:'OEM Escalated',time:'2024-08-28 14:22',done:true},{label:'Resolved',time:'2024-08-29 11:05',done:true}],resolution:'Firmware rollback to v1.8.7 resolved MQTT broker reconnect loop.'},
+    {id:'TKT-2024-0458',assetName:'EV Eco Plug Pro 7.4kW AC',category:'Billing / Meter Issue',description:'Energy meter reading appears to drift by ~3% compared to vehicle onboard computer.',created:'2024-09-01',status:'escalated',steps:[{label:'Received',time:'2024-09-01 10:30',done:true},{label:'OEM Escalated',time:'2024-09-01 16:45',done:true,inprog:true},{label:'Resolved',time:null,done:false}],resolution:null}
+  ],
+  faq: [
+    {triggers:['ac','level 2','type 2'],response:'**AC Charging** uses alternating current.\n\n- Level 1 (3.3 kW): Standard 230V/16A - ~20 km/hr\n- Level 2 (7.4 kW): 230V/32A - ~50 km/hr\n- 3-phase (22 kW): 3x32A - ~130 km/hr\n\nBest for home, office and overnight charging.'},
+    {triggers:['dc','fast charging','ccs','rapid'],response:'**DC Fast Charging** bypasses the onboard charger.\n\n- 60-150 kW: 0 to 80% in 30-60 min\n- 150-350 kW: 0 to 80% in 10-20 min\n\nConnectors: CCS2, CHAdeMO, GB/T'},
+    {triggers:['kw','kilowatt','how fast','power'],response:'**kW = charging speed**\n\n| Power | Range/hr |\n|-------|----------|\n| 3.3 kW | ~20 km |\n| 7.4 kW | ~45 km |\n| 22 kW | ~130 km |\n| 60 kW | ~400 km |\n\nHigher kW = faster charge.'},
+    {triggers:['phase','3 phase','single phase','load'],response:'**Phase Loading:**\n\n- Single-phase (1ph): Standard home - up to 7.4 kW\n- Three-phase (3ph): Commercial - up to 22 kW AC\n\nEV Eco Plug supports dynamic load management across all units.'},
+    {triggers:['ocpp','protocol','smart'],response:'**OCPP** is the global EV charging protocol.\n\nEV Eco Plug supports OCPP 1.6J and 2.0.1:\n- Remote start/stop\n- Real-time energy monitoring\n- OTA firmware updates\n- Fault diagnostics'},
+    {triggers:['offline','not working','red','error','fault','fail','problem'],response:'**Troubleshooting Checklist:**\n\n1. Check LED - solid red = connectivity fault\n2. Power-cycle the unit (30 sec off)\n3. Check Wi-Fi/LAN connection\n4. Reseat the charging cable\n5. Check if session is locked\n\nIf issue persists, raise a support ticket below.',showCTA:true},
+    {triggers:['warranty','guarantee'],response:'**EV Eco Plug Warranty:**\n\n- 3 years on DC fast chargers\n- 2-3 years on AC units\n- Covers hardware defects and controller failures\n- Excludes physical damage and surge events'}
+  ]
+};
+
+// ── UTILS ──────────────────────────────────────────────────────────────────────
+function warrantyPct(a){const i=new Date(a.installed),e=new Date(a.warrantyExpiry),n=new Date(),t=e-i,l=Math.min(n-i,t);return Math.max(0,Math.round((1-l/t)*100))}
+function warrantyColor(p){return p>60?'#22d3ee':p>25?'#fbbf24':'#f87171'}
+function daysLeft(e){return Math.max(0,Math.ceil((new Date(e)-new Date())/86400000))}
+function mdToHtml(t){return t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>').replace(/^- (.+)$/gm,'<span style="display:block;padding-left:1em">- $1</span>').replace(/\|(.+?)\|(.+?)\|/g,(_,a,b)=>`<div style="display:flex;gap:8px;font-size:.8em;margin:.2em 0"><span style="padding:.15em .5em;background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.1);min-width:80px">${a.trim()}</span><span style="padding:.15em .5em;background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.1)">${b.trim()}</span></div>`)}
+
+// ── STATE ──────────────────────────────────────────────────────────────────────
+let currentView='public';
+const app=document.getElementById('app');
+function switchView(v){currentView=v;renderNavbar();v==='public'?renderPublicView():renderPortalView();window.scrollTo({top:0,behavior:'smooth'})}
+
+// ── NAVBAR ─────────────────────────────────────────────────────────────────────
+function renderNavbar(){
+  const old=document.getElementById('navbar');if(old)old.remove();
+  const nav=document.createElement('nav');nav.id='navbar';
+  nav.innerHTML=`<div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+    <div class="flex items-center gap-2">
+      <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#06b6d4,#0284c7);display:flex;align-items:center;justify-content:center;animation:pulse-cyan 3s infinite">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <div><span style="font-weight:800;color:#fff;font-size:1.1rem">AVTON</span><span style="color:#22d3ee;font-size:1.1rem;font-weight:800"> Ventures</span></div>
+    </div>
+    <div class="hidden md:flex gap-6 text-sm text-gray-400">
+      <a href="#solutions" style="color:#9ca3af;text-decoration:none" onmouseover="this.style.color='#22d3ee'" onmouseout="this.style.color='#9ca3af'">Solutions</a>
+      <a href="#contact" style="color:#9ca3af;text-decoration:none" onmouseover="this.style.color='#22d3ee'" onmouseout="this.style.color='#9ca3af'">Contact</a>
+    </div>
+    <div class="flex gap-2 items-center">
+      <button class="btn-ghost text-sm" id="nav-pub">Public</button>
+      <button class="btn-cyan text-sm" id="nav-port">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="display:inline;margin-right:4px;vertical-align:middle"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Client Portal
+      </button>
+    </div>
+  </div>`;
+  nav.querySelector('#nav-pub').onclick=()=>switchView('public');
+  nav.querySelector('#nav-port').onclick=()=>switchView('portal');
+  document.body.insertBefore(nav,app);
+}
+
+// ── PUBLIC VIEW ────────────────────────────────────────────────────────────────
+function renderPublicView(){
+  app.innerHTML='';
+  const main=document.createElement('main');main.id='main-content';
+
+  // HERO
+  const hero=document.createElement('section');
+  hero.id='hero';
+  hero.style.cssText='min-height:100vh;display:flex;align-items:center;padding-top:4rem;position:relative;overflow:hidden;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(6,182,212,.12) 0%,transparent 70%),#030712';
+  hero.innerHTML=`
+    <div class="grid-bg"></div>
+    <div style="position:absolute;top:-100px;right:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,#06b6d4,transparent);filter:blur(60px);opacity:.08;pointer-events:none"></div>
+    <div class="max-w-7xl mx-auto px-4 w-full" style="position:relative;z-index:1">
+      <div style="display:grid;grid-template-columns:1fr;gap:3rem;align-items:center" class="lg:grid-cols-2">
+        <div class="fade-up">
+          <div class="badge-partner mb-6">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#22d3ee"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            Authorized Channel Partner: Eco Plug
+          </div>
+          <h1 style="font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;color:#fff;line-height:1.1;margin-bottom:1.2rem">
+            Power the<br>
+            <span style="background:linear-gradient(135deg,#22d3ee,#0284c7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Clean Future</span><br>
+            of Mobility
+          </h1>
+          <p style="color:#9ca3af;font-size:1.05rem;line-height:1.7;max-width:500px;margin-bottom:2rem">
+            Integrated EV charging infrastructure, solar energy systems, and portable backup power - engineered for commercial, residential, and dealership deployments across India.
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:2rem">
+            ${[['EV Charging','#22d3ee'],['Solar Integration','#fbbf24'],['Emergency Backup','#34d399'],['EV Dealerships','#a78bfa']].map(([l,c])=>`
+              <span style="display:flex;align-items:center;gap:.4rem;padding:.35rem .9rem;border-radius:999px;font-size:.8rem;font-weight:600;color:${c};background:${c}14;border:1px solid ${c}33">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="${c}"><circle cx="12" cy="12" r="6"/></svg> ${l}
+              </span>`).join('')}
+          </div>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap">
+            <button class="btn-cyan" style="font-size:1rem;padding:.8rem 1.8rem" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Free Consultation</button>
+            <button class="btn-ghost" style="font-size:1rem;padding:.8rem 1.8rem;display:flex;align-items:center;gap:.5rem" onclick="switchView('portal')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Client Portal
+            </button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)">
+            ${[['500+','Chargers Deployed'],['98.6%','Uptime SLA'],['3 MW+','Solar Capacity']].map(([v,l])=>`
+              <div>
+                <div style="font-size:1.6rem;font-weight:900;color:#fff">${v}</div>
+                <div style="font-size:.75rem;color:#6b7280;margin-top:.2rem">${l}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+        <!-- Charger Visual Card -->
+        <div style="display:flex;justify-content:center" class="hidden lg:flex">
+          <div class="glass animate-float" style="border-radius:24px;padding:2rem;max-width:340px;width:100%;box-shadow:var(--glow-md);position:relative">
+            <div style="display:flex;justify-content:center;margin-bottom:1.5rem">
+              <div style="width:120px;height:180px;border-radius:16px;background:linear-gradient(160deg,#0c1929,#091525);border:2px solid rgba(34,211,238,.3);box-shadow:var(--glow-md);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                <div style="display:flex;gap:.4rem">
+                  <div style="width:8px;height:8px;border-radius:50%;background:#22d3ee;animation:pulse-cyan 1s infinite"></div>
+                  <div style="width:8px;height:8px;border-radius:50%;background:#22d3ee;animation:pulse-cyan 1s .3s infinite"></div>
+                  <div style="width:8px;height:8px;border-radius:50%;background:#22d3ee;animation:pulse-cyan 1s .6s infinite"></div>
+                </div>
+                <div style="text-align:center"><div style="font-size:.85rem;font-weight:700;color:#22d3ee">7.4 kW</div><div style="font-size:.7rem;color:#6b7280">AC Type 2</div></div>
+              </div>
+            </div>
+            ${[['Status','<span style="color:#34d399;font-weight:700">&#9679; ONLINE</span>'],['Power Delivered','<span style="color:#fff;font-weight:700">7.2 kW</span>'],['Session Energy','<span style="color:#22d3ee;font-weight:700">18.4 kWh</span>']].map(([k,v])=>`
+              <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.05)">
+                <span style="color:#6b7280">${k}</span>${v}
+              </div>`).join('')}
+            <div style="margin-top:1rem">
+              <div style="display:flex;justify-content:space-between;font-size:.75rem;color:#6b7280;margin-bottom:.5rem"><span>Battery SOC</span><span>73%</span></div>
+              <div style="height:8px;border-radius:4px;background:rgba(255,255,255,.08)"><div style="width:73%;height:100%;border-radius:4px;background:linear-gradient(90deg,#0e7490,#22d3ee);animation:pulse-cyan 2s infinite"></div></div>
+            </div>
+            <div style="position:absolute;top:-12px;right:-12px;background:rgba(9,15,30,.95);border:1px solid var(--border);border-radius:10px;padding:.4rem .8rem;font-size:.75rem;font-weight:700;color:#22d3ee">&#10003; OCPP 2.0.1</div>
+            <div style="position:absolute;bottom:-12px;left:-12px;background:rgba(9,15,30,.95);border:1px solid rgba(16,185,129,.3);border-radius:10px;padding:.4rem .8rem;font-size:.75rem;font-weight:700;color:#34d399">&#9651; Zero Carbon</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  main.appendChild(hero);
+
+  // SOLUTIONS
+  const sols=document.createElement('section');sols.id='solutions';sols.style.cssText='padding:6rem 0;background:#030712';
+  const sArr=[
+    {icon:'&#9889;',color:'#22d3ee',bg:'rgba(34,211,238,.1)',title:'EV Charging Infrastructure',status:'Active',sc:'status-active',desc:'Commercial and residential EV charging with OCPP 2.0.1, dynamic load management, and remote diagnostics.',features:['AC 3.3-22 kW','DC 30-150 kW','OCPP 2.0.1','App + RFID access']},
+    {icon:'&#9728;',color:'#fbbf24',bg:'rgba(251,191,36,.1)',title:'Solar Integration',status:'Next Phase',sc:'status-next',desc:'On-grid and off-grid solar systems integrated with EV charging. Smart energy routing maximizes solar self-consumption.',features:['Rooftop & carport solar','Solar-to-EV routing','BESS integration','Net metering']},
+    {icon:'&#9889;',color:'#34d399',bg:'rgba(52,211,153,.1)',title:'Portable Emergency Backup',status:'Active',sc:'status-active',desc:'Mobile battery units and V2G-ready power banks for critical loads and emergency use.',features:['5-30 kWh portable BESS','V2G / V2L capable','Auto-switchover <20ms','LFP chemistry']},
+    {icon:'&#9658;',color:'#a78bfa',bg:'rgba(167,139,250,.1)',title:'EV Dealerships',status:'Coming Soon',sc:'status-coming',desc:'Turnkey charging for EV dealerships - showroom fast chargers, service bay units, and branded portals.',features:['Showroom DC chargers','Fleet bay charging','CRM integration','Revenue sharing']}
+  ];
+  sols.innerHTML=`<div class="max-w-7xl mx-auto px-4">
+    <div style="text-align:center;margin-bottom:3.5rem">
+      <div class="section-label" style="margin-bottom:.75rem">What We Do</div>
+      <h2 style="font-size:2.2rem;font-weight:800;color:#fff">Solutions Portfolio</h2>
+      <p style="color:#6b7280;margin-top:.75rem;max-width:500px;margin-left:auto;margin-right:auto">End-to-end clean energy infrastructure from hardware to management platforms.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem">
+      ${sArr.map(s=>`
+        <div class="solution-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.2rem">
+            <div style="width:48px;height:48px;border-radius:12px;background:${s.bg};border:1px solid ${s.color}33;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:${s.color}">${s.icon}</div>
+            <span class="status-badge ${s.sc}">${s.status}</span>
+          </div>
+          <h3 style="font-size:.95rem;font-weight:700;color:#fff;margin-bottom:.75rem">${s.title}</h3>
+          <p style="color:#6b7280;font-size:.82rem;line-height:1.6;margin-bottom:1.2rem">${s.desc}</p>
+          <ul style="list-style:none;margin-bottom:1.5rem">
+            ${s.features.map(f=>`<li style="font-size:.78rem;color:#d1d5db;padding:.25rem 0;display:flex;align-items:center;gap:.5rem"><span style="color:${s.color};font-weight:700">&#10003;</span>${f}</li>`).join('')}
+          </ul>
+          <button style="width:100%;padding:.55rem;border-radius:8px;border:1px solid ${s.color}33;background:${s.color}10;color:${s.color};font-size:.8rem;font-weight:600;cursor:pointer" onmouseover="this.style.background='${s.color}22'" onmouseout="this.style.background='${s.color}10'">${s.status==='Coming Soon'?'Join Waitlist &rarr;':'Learn More &rarr;'}</button>
+        </div>`).join('')}
+    </div>
+    <div class="glass" style="margin-top:3.5rem;border-radius:18px;padding:2rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.5rem;border-color:rgba(34,211,238,.2)">
+      <div>
+        <h3 style="font-size:1.2rem;font-weight:700;color:#fff">Ready to electrify your site?</h3>
+        <p style="color:#6b7280;font-size:.85rem;margin-top:.3rem">Free feasibility report and ROI estimate - no obligation.</p>
+      </div>
+      <button class="btn-cyan" style="padding:.75rem 1.75rem" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Schedule a Site Survey</button>
+    </div>
+  </div>`;
+  main.appendChild(sols);
+
+  // LEAD FORM
+  const formSec=document.createElement('section');formSec.id='contact';formSec.style.cssText='padding:6rem 0;background:linear-gradient(to bottom,#030712,#030f1a)';
+  formSec.innerHTML=`<div class="max-w-7xl mx-auto px-4" style="display:grid;grid-template-columns:1fr;gap:4rem" id="cg">
+    <div>
+      <div class="section-label" style="margin-bottom:.75rem">Get In Touch</div>
+      <h2 style="font-size:2rem;font-weight:800;color:#fff;line-height:1.2">Book a Free<br><span style="background:linear-gradient(135deg,#22d3ee,#0284c7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">EV Infrastructure</span><br>Consultation</h2>
+      <p style="color:#6b7280;margin-top:1rem;line-height:1.7">Our certified engineers will assess your site and provide a no-obligation proposal within 48 hours.</p>
+      <div style="margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        ${[['Email','info@avtonventures.in'],['Phone','+91 98765 43210'],['Location','Noida, Uttar Pradesh'],['Response','Within 24 hours']].map(([l,v])=>`
+          <div class="glass" style="border-radius:12px;padding:.85rem">
+            <div style="font-size:.7rem;color:#6b7280">${l}</div>
+            <div style="font-size:.82rem;font-weight:500;color:#e5e7eb;margin-top:.25rem">${v}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="glass" style="border-radius:20px;padding:2rem;border-color:rgba(34,211,238,.15)">
+      <h3 style="font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:1.5rem">Request a Consultation</h3>
+      <form id="lead-form">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div><label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.4rem">Full Name *</label><input class="input-field" id="lf-name" placeholder="Rajesh Kumar" required></div>
+          <div><label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.4rem">Company</label><input class="input-field" placeholder="Acme Pvt Ltd"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div><label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.4rem">Email *</label><input class="input-field" id="lf-email" type="email" placeholder="you@company.com" required></div>
+          <div><label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.4rem">Phone *</label><input class="input-field" id="lf-phone" placeholder="+91 98765 00000" required></div>
+        </div>
+        <div style="margin-bottom:1rem"><label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.4rem">Solution *</label>
+          <select class="input-field" id="lf-sol" required>
+            <option value="">Select...</option>
+            <option>EV Charging Infrastructure</option>
+            <option>Solar Integration</option>
+            <option>Portable Emergency Backup</option>
+            <option>EV Dealership Setup</option>
+          </select>
+        </div>
+        <div style="margin-bottom:1rem"><label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.4rem">Message</label><textarea class="input-field" rows="3" placeholder="Tell us about your requirements..." style="resize:vertical"></textarea></div>
+        <div style="display:flex;align-items:flex-start;gap:.6rem;margin-bottom:1rem">
+          <input type="checkbox" id="lf-consent" required style="margin-top:2px;accent-color:#22d3ee">
+          <label for="lf-consent" style="font-size:.75rem;color:#6b7280">I agree to be contacted by AVTON Ventures regarding my enquiry.</label>
+        </div>
+        <button type="submit" class="btn-cyan" style="width:100%;padding:.8rem;font-size:1rem" id="lf-btn">Send Enquiry &rarr;</button>
+        <div id="lf-success" style="display:none;text-align:center;padding:1.5rem">
+          <div style="font-size:2rem;margin-bottom:.5rem">&#10003;</div>
+          <div style="color:#34d399;font-weight:700">Enquiry Received!</div>
+          <div style="color:#6b7280;font-size:.85rem;margin-top:.3rem">We will get back to you within 24 hours.</div>
+        </div>
+      </form>
+    </div>
+  </div>`;
+  main.appendChild(formSec);
+  if(window.innerWidth>=1024)formSec.querySelector('#cg').style.gridTemplateColumns='1fr 1fr';
+
+  // FOOTER
+  const footer=document.createElement('footer');footer.style.cssText='padding:3rem 0;border-top:1px solid var(--border);background:#030712';
+  footer.innerHTML=`<div class="max-w-7xl mx-auto px-4" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem">
+    <div style="display:flex;align-items:center;gap:.6rem">
+      <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#06b6d4,#0284c7);display:flex;align-items:center;justify-content:center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <span style="font-weight:700;color:#fff">AVTON Ventures</span>
+      <span style="color:#6b7280;font-size:.8rem">&copy; 2024 All rights reserved.</span>
+    </div>
+    <div style="display:flex;gap:1.5rem">
+      ${['Privacy Policy','Terms','OCPP Compliance'].map(l=>`<a href="#" style="color:#4b5563;font-size:.8rem;text-decoration:none" onmouseover="this.style.color='#22d3ee'" onmouseout="this.style.color='#4b5563'">${l}</a>`).join('')}
+    </div>
+  </div>`;
+  main.appendChild(footer);
+  app.appendChild(main);
+
+  document.getElementById('lead-form')?.addEventListener('submit',function(e){
+    e.preventDefault();
+    const n=document.getElementById('lf-name').value.trim(),em=document.getElementById('lf-email').value.trim(),ph=document.getElementById('lf-phone').value.trim(),s=document.getElementById('lf-sol').value,c=document.getElementById('lf-consent').checked;
+    if(!n||!em||!ph||!s||!c){const b=document.getElementById('lf-btn');b.textContent='Please fill all required fields';b.style.background='linear-gradient(135deg,#dc2626,#b91c1c)';setTimeout(()=>{b.textContent='Send Enquiry \u2192';b.style.background=''},2500);return}
+    const b=document.getElementById('lf-btn');b.textContent='Sending...';b.disabled=true;
+    setTimeout(()=>{this.querySelectorAll('input,select,textarea,button,label').forEach(el=>el.style.display='none');document.getElementById('lf-success').style.display='block'},1200);
+  });
+}
+
+// ── PORTAL VIEW ────────────────────────────────────────────────────────────────
+function renderPortalView(){
+  app.innerHTML='';
+  const main=document.createElement('main');main.style.paddingTop='4rem';main.id='main-content';
+  const gate=document.createElement('div');gate.id='login-gate';
+  gate.style.cssText='min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:radial-gradient(ellipse 60% 40% at 50% 20%,rgba(6,182,212,.08) 0%,transparent 70%),#030712';
+  gate.innerHTML=`<div style="width:100%;max-width:380px">
+    <div style="text-align:center;margin-bottom:2rem">
+      <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,#0e7490,#0284c7);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;animation:pulse-cyan 3s infinite">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h2 style="font-size:1.6rem;font-weight:800;color:#fff">Client Portal</h2>
+      <p style="color:#6b7280;font-size:.85rem;margin-top:.3rem">Sign in to manage your EV assets</p>
+    </div>
+    <div class="glass" style="border-radius:20px;padding:2rem;border-color:rgba(34,211,238,.2)">
+      <form id="login-form">
+        <div style="margin-bottom:1rem"><label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.4rem">Email</label><input class="input-field" value="rajesh@avtonventures.in" type="email" id="login-email"></div>
+        <div style="margin-bottom:1.5rem"><label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.4rem">Password</label><input class="input-field" value="demo1234" type="password" id="login-pass"></div>
+        <button type="submit" class="btn-cyan" style="width:100%;padding:.8rem;font-size:1rem" id="login-btn">Sign In to Portal</button>
+        <p style="text-align:center;font-size:.72rem;color:#4b5563;margin-top:.75rem">Demo credentials pre-filled - just click Sign In</p>
+      </form>
+    </div>
+    <div style="text-align:center;margin-top:1rem">
+      <button style="background:none;border:none;color:#4b5563;font-size:.8rem;cursor:pointer" onmouseover="this.style.color='#22d3ee'" onmouseout="this.style.color='#4b5563'" onclick="switchView('public')">&larr; Back to Public Site</button>
+    </div>
+  </div>`;
+  main.appendChild(gate);app.appendChild(main);
+  document.getElementById('login-form').addEventListener('submit',function(e){
+    e.preventDefault();const b=document.getElementById('login-btn');b.textContent='Signing in...';b.disabled=true;
+    setTimeout(()=>{gate.remove();main.appendChild(renderDashboard())},900);
+  });
+}
+
+// ── DASHBOARD ──────────────────────────────────────────────────────────────────
+function renderDashboard(){
+  const dash=document.createElement('div');dash.style.cssText='min-height:100vh;padding:2rem 1rem;background:#030712';
+  dash.innerHTML=`<div class="max-w-7xl mx-auto">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2rem">
+      <div>
+        <div class="section-label" style="margin-bottom:.25rem">Client Portal</div>
+        <h2 style="font-size:1.6rem;font-weight:800;color:#fff">Welcome back, Rajesh K.</h2>
+        <p style="color:#4b5563;font-size:.82rem">Account #AVTN-2024-0042 &middot; Noida Site A &amp; B</p>
+      </div>
+      <button class="btn-ghost text-sm" onclick="switchView('public')">&larr; Back to Site</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:2rem">
+      ${[['3','Assets','#22d3ee'],['231','Sessions','#34d399'],['7,307 kWh','Energy','#fbbf24'],['2','Tickets','#a78bfa']].map(([v,l,c])=>`
+        <div class="glass" style="border-radius:14px;padding:1rem">
+          <div style="font-size:1.5rem;font-weight:800;color:${c}">${v}</div>
+          <div style="font-size:.72rem;color:#6b7280;margin-top:.15rem">${l}</div>
+        </div>`).join('')}
+    </div>
+    <div style="display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap" id="dash-tabs">
+      <button class="tab-btn active" data-tab="assets">My Assets</button>
+      <button class="tab-btn" data-tab="tickets">Support Tickets</button>
+      <button class="tab-btn" data-tab="new-ticket">+ New Ticket</button>
+    </div>
+    <div id="dash-content"></div>
+  </div>`;
+
+  function switchTab(tab){
+    dash.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+    const c=dash.querySelector('#dash-content');
+    if(tab==='assets')c.innerHTML=renderAssets();
+    else if(tab==='tickets')c.innerHTML=renderTickets();
+    else{c.innerHTML=renderNewTicket();wireTicketForm(c)}
+  }
+  dash.querySelector('#dash-tabs').addEventListener('click',e=>{const b=e.target.closest('.tab-btn');if(b)switchTab(b.dataset.tab)});
+  setTimeout(()=>{const c=dash.querySelector('#dash-content');if(c)c.innerHTML=renderAssets()},0);
+  return dash;
+}
+
+function renderAssets(){
+  return mockData.assets.map(a=>{
+    const wp=warrantyPct(a),wc=warrantyColor(wp),dl=daysLeft(a.warrantyExpiry);
+    return `<div class="asset-card" style="margin-bottom:1rem">
+      <div style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:flex-start">
+        <div style="display:flex;gap:1rem;align-items:flex-start;min-width:220px">
+          <div style="width:52px;height:52px;border-radius:12px;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
+              <span style="font-weight:700;color:#fff;font-size:.95rem">${a.name}</span>
+              <span class="status-badge ${a.status==='online'?'status-active':'status-coming'}">${a.status==='online'?'Online':'Offline'}</span>
+            </div>
+            <div style="font-size:.72rem;color:#6b7280;margin-top:.25rem">ID: <span style="color:#d1d5db;font-family:monospace">${a.id}</span></div>
+            <div style="font-size:.72rem;color:#6b7280">S/N: <span style="color:#d1d5db;font-family:monospace">${a.serial}</span></div>
+            <div style="font-size:.72rem;color:#6b7280;margin-top:.2rem">Location: ${a.location}</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:.5rem;flex:1">
+          ${Object.entries(a.specs).map(([k,v])=>`
+            <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:.6rem">
+              <div style="font-size:.65rem;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">${k}</div>
+              <div style="font-size:.82rem;font-weight:600;color:#fff;margin-top:.15rem">${v}</div>
+            </div>`).join('')}
+        </div>
+        <div style="min-width:180px">
+          <div style="margin-bottom:.75rem">
+            <div style="display:flex;justify-content:space-between;font-size:.72rem;margin-bottom:.4rem">
+              <span style="color:#6b7280">Warranty remaining</span>
+              <span style="font-weight:700;color:${wc}">${wp}%</span>
+            </div>
+            <div class="warranty-bar"><div class="warranty-fill" style="width:${wp}%;background:linear-gradient(90deg,${wc}88,${wc})"></div></div>
+            <div style="font-size:.65rem;color:#4b5563;margin-top:.25rem">${dl} days - Expires ${a.warrantyExpiry}</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.3rem"><span style="color:#6b7280">Firmware</span><span style="color:#e5e7eb;font-family:monospace">${a.firmware}</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:.3rem"><span style="color:#6b7280">Sessions</span><span style="color:#e5e7eb">${a.sessions}</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:.75rem"><span style="color:#6b7280">Energy</span><span style="color:#22d3ee;font-weight:600">${a.energyDelivered}</span></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTickets(){
+  const sm={resolved:'status-active',escalated:'status-coming',received:'status-next'};
+  return mockData.tickets.map(t=>`
+    <div class="glass" style="border-radius:16px;padding:1.5rem;margin-bottom:1.25rem;border-color:rgba(34,211,238,.12)">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;margin-bottom:1.25rem">
+        <div>
+          <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap">
+            <span style="color:#22d3ee;font-weight:700;font-family:monospace;font-size:.85rem">${t.id}</span>
+            <span class="status-badge ${sm[t.status]||'status-next'}">${t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span>
+          </div>
+          <h3 style="font-weight:600;color:#fff;margin-top:.4rem">${t.category}</h3>
+          <p style="color:#6b7280;font-size:.82rem;margin-top:.3rem;max-width:500px">${t.description}</p>
+        </div>
+        <div style="font-size:.75rem;color:#4b5563;text-align:right">
+          <div>Asset: <span style="color:#9ca3af">${t.assetName}</span></div>
+          <div>Created: ${t.created}</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,.06);padding-top:1rem">
+        <div style="font-size:.7rem;font-weight:700;color:#4b5563;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem">Status Timeline</div>
+        ${t.steps.map((s,i)=>`
+          <div class="ticket-step" style="margin-bottom:${i<t.steps.length-1?'1rem':'0'}">
+            <div class="step-dot ${s.done?(s.inprog?'inprog':'done'):'pend'}">${s.done?(s.inprog?'...':'&#10003;'):(i+1)}</div>
+            <div style="padding-top:.2rem;padding-bottom:.75rem">
+              <div style="font-size:.85rem;font-weight:600;color:${s.done?'#fff':'#4b5563'}">${s.label}</div>
+              <div style="font-size:.72rem;color:${s.done?'#6b7280':'#374151'};margin-top:.1rem">${s.time||'Pending'}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      ${t.resolution?`<div style="margin-top:.75rem;padding:.75rem 1rem;border-radius:10px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);font-size:.82rem"><span style="color:#34d399;font-weight:600">Resolution: </span><span style="color:#d1d5db">${t.resolution}</span></div>`:''}
+    </div>`).join('');
+}
+
+function renderNewTicket(){
+  return `<div style="max-width:600px">
+    <div class="glass" style="border-radius:20px;padding:2rem;border-color:rgba(34,211,238,.15)">
+      <h3 style="font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:1.5rem">Create Support Ticket</h3>
+      <form id="ticket-form">
+        <div style="margin-bottom:1rem"><label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.4rem">Asset *</label>
+          <select class="input-field" id="tk-asset" required>
+            <option value="">Select asset...</option>
+            ${mockData.assets.map(a=>`<option value="${a.id}">${a.name} - ${a.id}</option>`).join('')}
+          </select>
+        </div>
+        <div style="margin-bottom:1rem"><label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.4rem">Issue Category *</label>
+          <select class="input-field" id="tk-cat" required>
+            <option value="">Select category...</option>
+            <option>Connectivity Issue</option>
+            <option>Charging Session Failure</option>
+            <option>Billing / Meter Issue</option>
+            <option>Hardware Damage</option>
+            <option>Firmware / Software Error</option>
+            <option>LED / Display Fault</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div style="margin-bottom:1rem"><label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.4rem">Description *</label>
+          <textarea class="input-field" id="tk-desc" rows="4" placeholder="Describe the issue in detail..." required style="resize:vertical"></textarea>
+        </div>
+        <div style="margin-bottom:1.25rem">
+          <label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.6rem">Severity</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem">
+            ${[['Low','Low Priority'],['Medium','Charging Disrupted'],['High','Site Critical']].map(([l,h],i)=>`
+              <label style="cursor:pointer">
+                <input type="radio" name="sev" value="${l}" style="display:none" ${i===1?'checked':''}>
+                <div class="sev-opt" data-lv="${l}" style="text-align:center;padding:.6rem;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#6b7280;font-size:.78rem;font-weight:600;cursor:pointer">
+                  ${l}<br><span style="font-size:.65rem;opacity:.6">${h}</span>
+                </div>
+              </label>`).join('')}
+          </div>
+        </div>
+        <div style="margin-bottom:1.25rem">
+          <label style="display:block;font-size:.75rem;font-weight:600;color:#9ca3af;margin-bottom:.6rem">Attach Files (optional)</label>
+          <label style="display:flex;flex-direction:column;align-items:center;padding:1.5rem;border:2px dashed rgba(34,211,238,.2);border-radius:12px;cursor:pointer;background:rgba(34,211,238,.02)" onmouseover="this.style.borderColor='rgba(34,211,238,.4)'" onmouseout="this.style.borderColor='rgba(34,211,238,.2)'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" style="margin-bottom:.5rem;opacity:.6"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span style="font-size:.8rem;color:#6b7280">Drop files or <span style="color:#22d3ee">browse</span></span>
+            <span style="font-size:.7rem;color:#4b5563;margin-top:.2rem">PNG, JPG, PDF, MP4 - Max 25MB</span>
+            <input type="file" style="display:none" id="tk-file" multiple>
+          </label>
+          <div id="tk-file-list" style="margin-top:.5rem"></div>
+        </div>
+        <div style="display:flex;gap:.75rem">
+          <button type="submit" class="btn-cyan" style="flex:1;padding:.8rem">Submit Ticket</button>
+          <button type="button" class="btn-ghost" onclick="document.querySelector('[data-tab=tickets]').click()">Cancel</button>
+        </div>
+        <div id="tk-success" style="display:none;text-align:center;padding:1.5rem;border-radius:12px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);margin-top:1rem">
+          <div style="font-size:2rem;margin-bottom:.5rem">&#10003;</div>
+          <div style="color:#34d399;font-weight:700">Ticket Created!</div>
+          <div style="color:#6b7280;font-size:.82rem;margin-top:.3rem">Our team will respond within 4 business hours.</div>
+        </div>
+      </form>
+    </div>
+  </div>`;
+}
+
+function wireTicketForm(ctx){
+  ctx.querySelector('#tk-file')?.addEventListener('change',function(){
+    ctx.querySelector('#tk-file-list').innerHTML=[...this.files].map(f=>`<div style="font-size:.72rem;color:#6b7280;padding:.2rem 0">&#128206; ${f.name} (${(f.size/1024).toFixed(1)} KB)</div>`).join('');
+  });
+  const update=()=>{
+    const sel=ctx.querySelector('input[name="sev"]:checked')?.value;
+    ctx.querySelectorAll('.sev-opt').forEach(o=>{
+      const a=o.dataset.lv===sel;
+      o.style.borderColor=a?'rgba(34,211,238,.5)':'rgba(255,255,255,.08)';
+      o.style.background=a?'rgba(34,211,238,.1)':'rgba(255,255,255,.03)';
+      o.style.color=a?'#22d3ee':'#6b7280';
+    });
+  };
+  ctx.querySelectorAll('input[name="sev"]').forEach(r=>{r.addEventListener('change',update)});
+  ctx.querySelectorAll('.sev-opt').forEach(o=>{o.addEventListener('click',()=>{const r=ctx.querySelector(`input[value="${o.dataset.lv}"]`);if(r){r.checked=true;r.dispatchEvent(new Event('change'))}})});
+  update();
+  ctx.querySelector('#ticket-form')?.addEventListener('submit',e=>{
+    e.preventDefault();
+    if(!ctx.querySelector('#tk-asset').value||!ctx.querySelector('#tk-cat').value||!ctx.querySelector('#tk-desc').value.trim()){alert('Please fill all required fields.');return}
+    const b=e.target.querySelector('[type="submit"]');b.textContent='Submitting...';b.disabled=true;
+    setTimeout(()=>{e.target.querySelectorAll('div:not(#tk-success),label,button').forEach(el=>el.style.display='none');ctx.querySelector('#tk-success').style.display='block'},1200);
+  });
+}
+
+// ── CHATBOT ────────────────────────────────────────────────────────────────────
+function renderChatbot(){
+  const fab=document.createElement('div');fab.id='chatbot-fab';
+  fab.innerHTML=`
+    <button class="chat-bubble" id="chat-toggle" title="EcoAssist AI">
+      <svg id="ico-open" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      <svg id="ico-close" style="display:none" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="chat-badge" style="position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:#ef4444;font-size:.65rem;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center">1</div>
+    <div id="chat-win" style="display:none" class="chat-window">
+      <div class="chat-header">
+        <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div style="flex:1">
+          <div style="font-weight:700;color:#fff;font-size:.9rem">EcoAssist AI</div>
+          <div style="color:#a5f3fc;font-size:.7rem">EV Charging Expert - Always available</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.4rem">
+          <div style="width:7px;height:7px;border-radius:50%;background:#34d399;animation:pulse-cyan 2s infinite"></div>
+          <span style="font-size:.68rem;color:#6ee7b7">Live</span>
+        </div>
+      </div>
+      <div class="chat-messages" id="chat-msgs"></div>
+      <div id="chat-sugg" style="padding:.5rem .75rem .25rem;display:flex;flex-wrap:wrap;gap:.4rem">
+        ${['AC vs DC?','kW explained','Phase loading','Charger offline!','OCPP?','Warranty?'].map(s=>`<button style="font-size:.72rem;padding:.25rem .65rem;border-radius:999px;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);color:#22d3ee;cursor:pointer" onclick="chatSend(this.textContent)">${s}</button>`).join('')}
+      </div>
+      <div class="chat-input-row">
+        <textarea id="chat-input" rows="1" placeholder="Ask about EV charging..."></textarea>
+        <button class="btn-cyan" style="padding:.5rem .75rem;flex-shrink:0" onclick="chatSend(document.getElementById('chat-input').value)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(fab);
+
+  let open=false;
+  fab.querySelector('#chat-toggle').onclick=()=>{
+    open=!open;
+    fab.querySelector('#chat-win').style.display=open?'flex':'none';
+    fab.querySelector('#ico-open').style.display=open?'none':'';
+    fab.querySelector('#ico-close').style.display=open?'':'none';
+    const badge=fab.querySelector('#chat-badge');if(badge)badge.remove();
+    if(open)setTimeout(()=>document.getElementById('chat-input')?.focus(),100);
+  };
+  fab.querySelector('#chat-input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();chatSend(e.target.value)}});
+  setTimeout(()=>chatAddMsg('bot','Hello! I am **EcoAssist AI** - your EV charging expert.\n\nAsk me about AC/DC charging, kW levels, phase loading, OCPP, or charger troubleshooting. I can also raise an OEM support ticket directly from here!'),300);
+}
+
+window.chatSend=function(text){
+  if(!text?.trim())return;
+  chatAddMsg('user',text);
+  const inp=document.getElementById('chat-input');if(inp)inp.value='';
+  const sugg=document.getElementById('chat-sugg');if(sugg)sugg.style.display='none';
+  const msgs=document.getElementById('chat-msgs');
+  const typing=document.createElement('div');typing.className='msg-bot';typing.id='typing';
+  typing.innerHTML=`<span style="display:inline-flex;gap:4px">
+    <span style="width:7px;height:7px;border-radius:50%;background:#22d3ee;animation:bounce-dot 1.2s 0s infinite ease-in-out"></span>
+    <span style="width:7px;height:7px;border-radius:50%;background:#22d3ee;animation:bounce-dot 1.2s .2s infinite ease-in-out"></span>
+    <span style="width:7px;height:7px;border-radius:50%;background:#22d3ee;animation:bounce-dot 1.2s .4s infinite ease-in-out"></span>
+  </span>`;
+  if(msgs){msgs.appendChild(typing);msgs.scrollTop=msgs.scrollHeight}
+  setTimeout(()=>{
+    document.getElementById('typing')?.remove();
+    const lower=text.toLowerCase();
+    const match=mockData.faq.find(f=>f.triggers.some(t=>lower.includes(t)));
+    if(match)chatAddMsg('bot',match.response,match.showCTA);
+    else if(/^(hi|hello|hey|namaste)/i.test(lower))chatAddMsg('bot','Hello! I am **EcoAssist AI**.\n\nI can help with:\n- AC vs DC charging\n- kW power levels\n- Phase loading\n- OCPP protocol\n- Charger troubleshooting\n\nWhat do you need?');
+    else if(lower.includes('ticket')||lower.includes('support'))chatAddMsg('bot','I can raise a support ticket for you right now.',true);
+    else chatAddMsg('bot','Not sure about that. Try asking about:\n\n- **AC** or **DC** - charging types\n- **kW** - power levels\n- **phase** - load management\n- **OCPP** - smart protocol\n- **offline** - troubleshooting');
+  },600+Math.random()*500);
+};
+
+function chatAddMsg(role,text,showCTA=false){
+  const msgs=document.getElementById('chat-msgs');if(!msgs)return;
+  const d=document.createElement('div');d.className=role==='bot'?'msg-bot':'msg-user';
+  d.innerHTML=mdToHtml(text);
+  if(showCTA){
+    const btn=document.createElement('button');btn.className='ticket-cta-btn';btn.textContent='Raise OEM Support Ticket';
+    btn.onclick=()=>{
+      const win=document.getElementById('chat-win');if(win)win.style.display='none';
+      switchView('portal');
+      setTimeout(()=>document.querySelector('[data-tab="new-ticket"]')?.click(),1500);
+    };
+    d.appendChild(btn);
+  }
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────────
+renderNavbar();
+renderPublicView();
+renderChatbot();
+</script>
+</body>
+</html>
